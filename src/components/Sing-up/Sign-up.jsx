@@ -149,12 +149,16 @@ const Container = styled.main`
       color: #ffffff;
 
       background-color: #a328d6;
+      border-radius: 0.5rem;
     }
   }
 
   input {
     width: 32.6rem;
     height: 5.8rem;
+
+    border-radius: 0.5rem;
+    border: none;
   }
 
   input::placeholder {

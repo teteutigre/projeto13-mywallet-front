@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import Context from "../Context";
@@ -10,6 +10,7 @@ import entrada from "../../imgs/Entrada.svg";
 export default function Home() {
   const navigate = useNavigate();
   const { name } = useContext(Context);
+  const promise = axios.get("http://localhost:5000/home");
 
   return (
     <Container>
@@ -18,18 +19,21 @@ export default function Home() {
         <img onClick={() => navigate("/sign-in")} src={porta} />
       </div>
       <div className="registry">
-        <p>Não há registros de entrada ou saída</p>
+        {promise.then((res) => {
+          res.data.Entry.map((e) => {});
+          console.log(res.data.Exit);
+        })}
       </div>
       <Footer>
         <div>
-          <img src={entrada} />
+          <img onClick={() => navigate("/newEntry")} src={entrada} />
           <p>
             Nova <br /> entrada
           </p>
         </div>
 
         <div>
-          <img src={saida} />
+          <img onClick={() => navigate("/newExit")} src={saida} />
           <p>
             Nova <br /> saída
           </p>

@@ -88,7 +88,6 @@ export default function SignIn() {
 const Container = styled.main`
   width: 100%;
   height: 66.7rem;
-  background-color: #8c11be;
 
   display: flex;
   flex-direction: column;
@@ -127,6 +126,7 @@ const Container = styled.main`
       color: #ffffff;
 
       background-color: #a328d6;
+      border-radius: 0.5rem;
 
       svg {
         width: 6rem;
@@ -137,6 +137,9 @@ const Container = styled.main`
   input {
     width: 32.6rem;
     height: 5.8rem;
+
+    border-radius: 0.5rem;
+    border: none;
   }
 
   input::placeholder {
@@ -145,6 +148,7 @@ const Container = styled.main`
 
     font-weight: 400;
     font-size: 2rem;
+
     color: #000000;
     padding-left: 1.5rem;
   }
