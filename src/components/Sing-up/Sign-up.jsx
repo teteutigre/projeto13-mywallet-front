@@ -9,7 +9,6 @@ export default function SignUp() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState("Cadastrar");
   const [block, setBlock] = useState(false);
-  const { setToken } = useContext(Context);
   const [form, setForm] = useState({
     email: "",
     password: "",

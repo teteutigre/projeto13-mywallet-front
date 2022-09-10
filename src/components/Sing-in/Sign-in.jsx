@@ -11,6 +11,7 @@ export default function SignIn() {
   const [block, setBlock] = useState(false);
   const [blockButton, setBlockButton] = useState(false);
   const { setToken } = useContext(Context);
+  const { setName } = useContext(Context);
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -26,20 +27,20 @@ export default function SignIn() {
   function login(event) {
     event.preventDefault();
     setLoading(<ThreeDots color="white" />);
-
     if (form.email === "" || form.password === "") {
       alert("Emaill ou senha esta em branco");
       setLoading("Entrar");
       return;
     } else {
       const body = { ...form };
-      console.log(body);
       axios
         .post("http://localhost:5000/sign-in", body)
         .then((res) => {
           setBlock(true);
-          /* setToken(res.data.token); */
-          navigate("/perfil");
+          setToken(res.data.token);
+          setName(res.data.name);
+          console.log(res);
+          navigate("/home");
           setBlockButton(true);
         })
         .catch(() => {
