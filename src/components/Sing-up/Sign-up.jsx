@@ -39,20 +39,24 @@ export default function SignUp() {
       alert("As senhas não são iguais ");
       setLoading("Cadastrar");
       return;
+    } else if (form.password.length < 6 || form.passwordConfirm.length < 6) {
+      alert("As senhas tem que possuir no minimo 6 caracteres");
+      setLoading("Cadastrar");
+      return;
     } else {
       const body = { ...form };
       axios
         .post("http://localhost:5000/sign-up", body)
-        .then((res) => {
+        .then(() => {
           setBlock(true);
-          setToken(res.data.token);
-          navigate("/sing-in");
+          navigate("/sign-in");
         })
-        .catch(() => {
+        .catch((err) => {
           setBlock(true);
           alert("Login ou senha inválidos");
           setLoading("Cadastrar");
           setBlock(false);
+          console.log(err);
         });
     }
   }

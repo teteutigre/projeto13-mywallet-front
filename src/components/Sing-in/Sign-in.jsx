@@ -9,6 +9,7 @@ export default function SignIn() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState("Entrar");
   const [block, setBlock] = useState(false);
+  const [blockButton, setBlockButton] = useState(false);
   const { setToken } = useContext(Context);
   const [form, setForm] = useState({
     email: "",
@@ -30,21 +31,26 @@ export default function SignIn() {
       alert("Emaill ou senha esta em branco");
       setLoading("Entrar");
       return;
+    } else {
+      const body = { ...form };
+      console.log(body);
+      axios
+        .post("http://localhost:5000/sign-in", body)
+        .then((res) => {
+          setBlock(true);
+          /* setToken(res.data.token); */
+          navigate("/perfil");
+          setBlockButton(true);
+        })
+        .catch(() => {
+          setBlockButton(true);
+          setBlock(true);
+          alert("Login ou senha inválidos");
+          setLoading("Entrar");
+          setBlock(false);
+          setBlockButton(false);
+        });
     }
-
-    axios
-      .post("http://localhost:5000/sign-in", form)
-      .then((res) => {
-        setBlock(true);
-        setToken(res.data.token);
-        navigate("/sing-up");
-      })
-      .catch(() => {
-        setBlock(true);
-        alert("Login ou senha inválidos");
-        setLoading("Entrar");
-        setBlock(false);
-      });
   }
 
   return (
@@ -52,10 +58,10 @@ export default function SignIn() {
       <h1>MyWallet</h1>
       <form>
         <input
-          type="email"
           name="email"
           onChange={handleForm}
           value={form.email}
+          type="email"
           placeholder="E-mail"
           disabled={block}
           required
@@ -69,7 +75,9 @@ export default function SignIn() {
           disabled={block}
           required
         />
-        <button onClick={login}>{loading}</button>
+        <button disabled={blockButton} onClick={login}>
+          {loading}
+        </button>
       </form>
       <p onClick={() => navigate("/sign-up")}>Primeira vez? Cadastre-se!</p>
     </Container>
@@ -118,6 +126,10 @@ const Container = styled.main`
       color: #ffffff;
 
       background-color: #a328d6;
+
+      svg {
+        width: 6rem;
+      }
     }
   }
 
