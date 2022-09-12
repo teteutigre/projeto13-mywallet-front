@@ -10,6 +10,8 @@ import NewExit from "./components/newExit/NewExit";
 export default function App() {
   const [token, setToken] = useState("");
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [balance, setBalance] = useState("");
 
   return (
     <Context.Provider
@@ -18,11 +20,15 @@ export default function App() {
         setToken,
         name,
         setName,
+        setEmail,
+        email,
+        balance,
+        setBalance,
       }}
     >
       <BrowserRouter>
         <Routes>
-          <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/home" element={<Home />} />
           <Route path="/newEntry" element={<NewEntry />} />

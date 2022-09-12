@@ -10,8 +10,7 @@ export default function SignIn() {
   const [loading, setLoading] = useState("Entrar");
   const [block, setBlock] = useState(false);
   const [blockButton, setBlockButton] = useState(false);
-  const { setToken } = useContext(Context);
-  const { setName } = useContext(Context);
+  const { setToken, setEmail, setName, setBalance } = useContext(Context);
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -37,9 +36,10 @@ export default function SignIn() {
         .post("http://localhost:5000/sign-in", body)
         .then((res) => {
           setBlock(true);
+          setBalance(res.data.balance);
           setToken(res.data.token);
           setName(res.data.name);
-          console.log(res);
+          setEmail(res.data.id);
           navigate("/home");
           setBlockButton(true);
         })

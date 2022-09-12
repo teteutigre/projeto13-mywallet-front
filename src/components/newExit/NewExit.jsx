@@ -1,15 +1,17 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
 import styled from "styled-components";
+import Context from "../Context";
 
 export default function NewExit() {
   const navigate = useNavigate();
   const [block, setBlock] = useState(false);
   const [blockButton, setBlockButton] = useState(false);
+  const { token, email, setBalance } = useContext(Context);
   const [form, setForm] = useState({
     value: "",
-    Description: "",
+    description: "",
   });
 
   function handleForm(event) {
@@ -21,16 +23,24 @@ export default function NewExit() {
 
   function Exit(event) {
     event.preventDefault();
-    if (form.value === "" || form.Description === "") {
+    if (form.value === "" || form.description === "") {
       alert("Algo estar em branco");
       return;
     } else if (form.value === String) {
       alert("Valor tem que ser um numero");
     } else {
-      const body = { ...form };
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          id: email,
+        },
+      };
+      const body = { ...form, id: email, type: "exit" };
       axios
-        .post("http://localhost:5000/newExit", body)
-        .then(() => {
+        .post("http://localhost:5000/operation", body, config)
+        .then((e) => {
+          setBalance(e.data);
+          console.log(e);
           setBlock(true);
           navigate("/home");
           setBlockButton(true);
@@ -61,10 +71,10 @@ export default function NewExit() {
           required
         />
         <input
-          name="Description"
+          name="description"
           type="text"
           onChange={handleForm}
-          value={form.Description}
+          value={form.description}
           placeholder="Descrição"
           disabled={block}
           required

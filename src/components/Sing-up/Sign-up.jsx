@@ -48,7 +48,7 @@ export default function SignUp() {
         .post("http://localhost:5000/sign-up", body)
         .then(() => {
           setBlock(true);
-          navigate("/sign-in");
+          navigate("/");
         })
         .catch((err) => {
           setBlock(true);
@@ -102,7 +102,7 @@ export default function SignUp() {
         />
         <button onClick={login}>{loading}</button>
       </form>
-      <p onClick={() => navigate("/sign-in")}>Já tem uma conta? Entre agora!</p>
+      <p onClick={() => navigate("/")}>Já tem uma conta? Entre agora!</p>
     </Container>
   );
 }

@@ -1,28 +1,47 @@
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import Context from "../Context";
 import porta from "../../imgs/porta.svg";
 import saida from "../../imgs/saida.svg";
 import entrada from "../../imgs/Entrada.svg";
+import Extract from "./Extract.jsx";
 
 export default function Home() {
   const navigate = useNavigate();
-  const { name } = useContext(Context);
-  const promise = axios.get("http://localhost:5000/home");
+  const { name, token, email } = useContext(Context);
+  const [extract, setExtract] = useState([]);
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      id: email,
+    },
+  };
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/home", config)
+      .then((res) => {
+        setExtract(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <Container>
       <div>
         <h2>Olá, {name}</h2>
-        <img onClick={() => navigate("/sign-in")} src={porta} />
+        <img onClick={() => navigate("/")} src={porta} />
       </div>
       <div className="registry">
-        {promise.then((res) => {
-          res.data.Entry.map((e) => {});
-          console.log(res.data.Exit);
-        })}
+        {extract.length > 0 ? (
+          <Extract extract={extract} />
+        ) : (
+          <p className="p">Não há registros de entrada ou saída</p>
+        )}
       </div>
       <Footer>
         <div>
@@ -78,16 +97,23 @@ const Container = styled.main`
 
     background-color: #ffffff;
     border-radius: 5px;
+  }
 
-    p {
-      font-weight: 400;
-      font-size: 2rem;
-      text-align: center;
+  .p {
+    font-weight: 400;
+    font-size: 2rem;
+    text-align: center;
 
-      padding: 0px 20%;
+    padding: 0px 20%;
 
-      color: #868686;
-    }
+    color: #868686;
+  }
+
+  .saldo {
+    font-weight: 700;
+    font-size: 1.7rem;
+
+    color: #000000;
   }
 `;
 
